@@ -1,33 +1,12 @@
-// Class to hold the data and pointer of a Node
-//Luis Miranda
-//Chpt4 PA
-public class Node { 
+// Binary Search Tree Node
+class Node {
+	public int key;
+	public Node left;
+	public Node right;
 
-	private int data;
-    private Node next;
-
-	// Constructor to create a Node object/instance
-    public Node(int item) { 
-		data = item;
-		next = null;
+	public Node(int nodeKey) {
+		key = nodeKey;
+		left = null;
+		right = null;
 	}
-	
-	// Get methods
-	public int getData() {
-		return this.data;
-	}
-	
-	public Node getNext() {
-		return this.next;
-	}
-	
-	// Set methods
-	public void setData(int data) {
-		this.data = data;
-	}
-	
-	public void setNext(Node node) {
-		this.next = node;
-	}
-
 }
