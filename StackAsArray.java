@@ -1,96 +1,91 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class StackAsArray {
     private static int[] stack; 
     private static int top; 
-    private static int size; 
+    private static int allocationSize; 
 
-    // Initialize the stack with the initial size
-    public static void initializeStack(int initialSize) {
-        size = initialSize;
-        stack = new int[size];
-        top = -1; // Stack is empty
-    }
-
-    // Method to resize the stack when full
+    // Method to resize the stack when it's full
     public static void stackResize() {
-        size *= 2; 
-        stack = Arrays.copyOf(stack, size); 
+        allocationSize *= 2; // Double the allocation size
+        int[] newStack = new int[allocationSize]; // Create a new array
+        System.arraycopy(stack, 0, newStack, 0, stack.length); // Copy elements from the old stack to the new stack
+        stack = newStack; // Update the stack
     }
 
-    // Push an item onto the stack
+    // Method to push an item onto the stack
     public static boolean push(int item) {
-        if (top == size - 1) { 
+        if (top == allocationSize) { 
             stackResize(); 
         }
-        stack[++top] = item; 
-        return true; 
+        if (top < allocationSize) { 
+            stack[top++] = item; 
+            return true; 
+        }
+        return false; 
     }
 
-   
+    // Method to pop an item from the stack
     public static int pop() {
-        if (top == -1) {
-            return Integer.MIN_VALUE; //return minimum integer value as an indicator
+        if (isEmpty()) {
+            return -1; 
         }
-        return stack[top--]; // Return the top item and -1 top
+        return stack[--top]; 
     }
 
-    
+    // Method to check if the stack is empty
     public static boolean isEmpty() {
-        return top == -1; // If top is -1 stack is empty
+        return top == 0; 
     }
 
-    
+    // Method to peek at the top item of the stack
     public static int peek() {
-        if (top == -1) {
-            return Integer.MIN_VALUE; 
+        if (isEmpty()) { 
+            return -1; 
         }
-        return stack[top]; // Return top item
+        return stack[top - 1]; 
     }
 
-    
+    // Method to print the stack
     public static void printStack() {
-        for (int i = top; i >= 0; i--) {
-            System.out.println(stack[i]); // Print stack top to bottom
+        for (int i = top - 1; i >= 0; i--) { 
+            System.out.println(stack[i]); // Print each item of the stack
         }
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the allocation size of the stack: ");
-        int allocationSize = scanner.nextInt();
-        initializeStack(allocationSize); // Initialize the stack 
+        System.out.println("Enter the allocation size: ");
+        allocationSize = scanner.nextInt(); // Input allocation size
+        stack = new int[allocationSize]; // Initialize the stack array with the allocation 
+        top = 0; 
 
-        // Test 
-        System.out.println();
-        System.out.println("Item 1 was pushed " + (push(1) ? "successfully" : "unsuccessfully"));
-        System.out.println("Item 2 was pushed " + (push(2) ? "successfully" : "unsuccessfully"));
-        System.out.println("The top item on the stack is: " + peek());
-        System.out.println("Item 3 was pushed " + (push(3) ? "successfully" : "unsuccessfully"));
-        System.out.println("The length of the stack is: " + (top + 1));
-        System.out.println();
-        System.out.println("The item popped from the stack was " + pop());
-        System.out.println("The top item on the stack is: " + peek());
-        System.out.println("Item 4 was pushed " + (push(4) ? "successfully" : "unsuccessfully"));
-        System.out.println();
-        System.out.println("The stack contents are:");
-        printStack();
-        System.out.println("Item 5 was pushed " + (push(5) ? "successfully" : "unsuccessfully"));
-        System.out.println();
-        System.out.println("The item popped from the stack was " + pop());
-        System.out.println("Item 6 was pushed " + (push(6) ? "successfully" : "unsuccessfully"));
-        System.out.println();
-        System.out.println("The stack contents are the following:");
-        printStack();
-        System.out.println();
-        System.out.println("The item popped from the stack was " + pop());
-        System.out.println("The stack is empty: " + isEmpty());
-        System.out.println("The item popped from the stack was " + pop());
-        System.out.println("The item popped from the stack was " + pop());
-        System.out.println("The item popped from the stack was " + pop());
-        System.out.println("The stack is empty: " + isEmpty());
+        System.out.println("Enter the maximum length (Enter -1 for unbounded length): ");
+        int maxLength = scanner.nextInt(); // Input for max length
 
-        scanner.close();
+        // Test scenario
+        System.out.println("Push item 1 to stack: " + (push(1) ? "Successful" : "Not successful"));
+        System.out.println("Push item 2 to stack: " + (push(2) ? "Successful" : "Not successful"));
+        System.out.println("The top item in the stack was: " + peek());
+        System.out.println("Push item 3 to stack: " + (push(3) ? "Successful" : "Not successful"));
+        System.out.println("Stack length: " + top);
+        System.out.println("The item popped from the stack was:" + pop());
+        System.out.println("The top item in the stack was: " + peek());
+        System.out.println("Push item 4 to stack: " + (push(4) ? "Successful" : "Not successful"));
+        System.out.println("The stack is the following:");
+        printStack();
+        System.out.println("Push item 5 to stack: " + (push(5) ? "Successful" : "Not successful"));
+        System.out.println("The item popped from the stack was: " + pop());
+        System.out.println("Push item 6 to stack: " + (push(6) ? "Successful" : "Not successful"));
+        System.out.println("The stack is the following:");
+        printStack();
+        System.out.println("The item popped from the stack was: " + pop());
+        System.out.println("The stack is empty: " + isEmpty());
+        System.out.println("The item popped from the stack was: " + pop());
+        System.out.println("The item popped from the stack was: " + pop());
+        System.out.println("The item popped from the stack was: " + pop());
+        System.out.println("The stack is empty: " + isEmpty());
     }
 }
+
+
